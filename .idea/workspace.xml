@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c4eb4b24-fb1d-42b8-a343-29ddcb5a905b" name="Default Changelist" comment="" />
+    <list default="true" id="c4eb4b24-fb1d-42b8-a343-29ddcb5a905b" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catag/services/templates/services/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/catag/services/templates/services/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catag/services/templates/services/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/catag/services/templates/services/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catag/services/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/catag/services/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/catag/services/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/catag/services/views.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,7 +22,11 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectId" id="1dx1z2S36wRQk1SkoohbpkcE4e4" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -22,6 +34,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="TERMINAL_CUSTOM_COMMANDS_GOT_IT" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/catag/services/static/services/css" />
@@ -30,6 +43,7 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -53,7 +67,7 @@
       <workItem from="1593352189395" duration="4915000" />
       <workItem from="1593702647407" duration="1986000" />
       <workItem from="1593780088425" duration="8878000" />
-      <workItem from="1593825422386" duration="30051000" />
+      <workItem from="1593825422386" duration="38277000" />
     </task>
     <servers />
   </component>
@@ -69,5 +83,9 @@
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
     <state x="1023" y="374" key="FileChooserDialogImpl/0.0.2194.1194@0.0.2194.1194" timestamp="1593705132966" />
+    <state x="318" y="242" key="SettingsEditor" timestamp="1593864017610">
+      <screen x="0" y="0" width="2194" height="1194" />
+    </state>
+    <state x="318" y="242" key="SettingsEditor/0.0.2194.1194@0.0.2194.1194" timestamp="1593864017610" />
   </component>
 </project>

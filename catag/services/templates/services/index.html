@@ -2,9 +2,6 @@
 
 {% block content %}
 
-
-
-
     <div align="center" class="justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
       <h1 class="h2">概 览</h1>
     </div>
@@ -66,20 +63,9 @@
 
       <!-- 显示文件名 -->
       <script>
-
-        function showFilename1(file){
-            $("#filename1").html(file.name);
-        }
-        function showFilename2(file){
-            $("#filename2").html(file.name);
-        }
-
         var myBar = echarts.init(document.getElementById('bar'));
         var myGoldPie = echarts.init(document.getElementById('gold_pie'));
         var myPredPie = echarts.init(document.getElementById('pred_pie'));
-
-        var predLabel = {}
-        var goldLabel = {}
 
         // 2.指定图表的配置项和数据 放在option对象里面
         var barOption = {
@@ -217,6 +203,16 @@
             }
           ]
         };
+        var result = {{ result|safe }};
+        console.log(result);
+        goldPieOption["legend"]["data"] = result["gold_pie_legend_data"];
+        goldPieOption["series"][0]["data"] = result["gold_pie_series_data"];
+        predPieOption["legend"]["data"] = result["pred_pie_legend_data"];
+        predPieOption["series"][0]["data"] = result["pred_pie_series_data"];
+        barOption["dataset"]["source"] = result["bar_dataset_source"];
+        myGoldPie.setOption(goldPieOption);
+        myPredPie.setOption(predPieOption);
+        myBar.setOption(barOption);
 
         function AjaxSubmitGoldFile() {
             var data = document.getElementById("gold_file").files[0];//加上索引files[0]就是文件的内容,固定写法
@@ -227,24 +223,11 @@
                 type:"POST",
                 data:f,
                 success:function (arg) {
-                    var gold_dict = arg["gold"]
-                    if (gold_dict){
-                      goldPieOption["legend"]["data"] = []
-                      goldPieOption["series"][0]["data"] = []
-                      for (var key in gold_dict){
-                        goldLabel[key] = gold_dict[key]
-                        goldPieOption["legend"]["data"].push(key)
-                        goldPieOption["series"][0]["data"].push({"name": key, "value": goldLabel[key]})
-                        if(predLabel[key]) {
-                          barOption["dataset"]["source"].push([key, goldLabel[key], predLabel[key]])
-                        }
-                        else {
-                          barOption["dataset"]["source"].push([key, goldLabel[key], 0])
-                        }
-                      }
-                      myGoldPie.setOption(goldPieOption);
-                      myBar.setOption(barOption)
-                    }
+                  goldPieOption["legend"]["data"] = arg["gold_pie_legend_data"];
+                  goldPieOption["series"][0]["data"] = arg["gold_pie_series_data"];
+                  barOption["dataset"]["source"] = arg["bar_dataset_source"];
+                  myGoldPie.setOption(goldPieOption);
+                  myBar.setOption(barOption);
                 },
                 processData: false,//通过FormData处理数据 jQuery上传文件必须要加这个 tell jQuery not to process the data
                 contentType:false,//通过FormData处理数据 jQuery上传文件必须要加这个 tell jQuery not to set contentType
@@ -261,30 +244,23 @@
                 type:"POST",
                 data:f,
                 success:function (arg) {
-                  var pred_dict = arg["pred"]
-                  if (pred_dict){
-                    predPieOption["legend"]["data"] = []
-                    predPieOption["series"][0]["data"] = []
-                    for (var key in pred_dict){
-                        predLabel[key] = pred_dict[key]
-                        predPieOption["legend"]["data"].push(key)
-                        predPieOption["series"][0]["data"].push({"name": key, "value": predLabel[key]})
-                        if(goldLabel[key]) {
-                          barOption["dataset"]["source"].push([key, goldLabel[key], predLabel[key]])
-                        }
-                        else{
-                          barOption["dataset"]["source"].push([key, 0, predLabel[key]])
-                        }
-                    }
-
-                    myPredPie.setOption(predPieOption);
-                    myBar.setOption(barOption)
-                  }
+                  predPieOption["legend"]["data"] = arg["pred_pie_legend_data"];
+                  predPieOption["series"][0]["data"] = arg["pred_pie_series_data"];
+                  barOption["dataset"]["source"] = arg["bar_dataset_source"];
+                  myBar.setOption(barOption);
+                  myPredPie.setOption(predPieOption);
                 },
                 processData: false,//通过FormData处理数据 jQuery上传文件必须要加这个 tell jQuery not to process the data
                 contentType:false,//通过FormData处理数据 jQuery上传文件必须要加这个 tell jQuery not to set contentType
                 //以上表示jQuery data数据内容不需要做处理了,把FormData内容发过去给服务器就可以了
             })
+        }
+
+        function showFilename1(file){
+            $("#filename1").html(file.name);
+        }
+        function showFilename2(file){
+            $("#filename2").html(file.name);
         }
 
       </script>

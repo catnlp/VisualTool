@@ -12,19 +12,60 @@ gold_info = []
 pred_info = []
 gold_label = {}
 pred_label = {}
+gold_pie_legend_data = []
+gold_pie_series_data = []
+pred_pie_legend_data = []
+pred_pie_series_data = []
+bar_dataset_source = []
 
 
 @csrf_exempt
 def index(request):
-    username = request.POST.get('username')
-    password = request.POST.get('password')
-    user = auth.authenticate(username=username, password=password)
-    if user:
-        auth.login(request, user)
-        request.session['user'] = username  # 将session信息记录到浏览器
-        return render(request, "services/index.html")
+    global gold_pie_legend_data
+    global gold_pie_series_data
+    global pred_pie_legend_data
+    global pred_pie_series_data
+    global bar_dataset_source
+    if request.method == "POST":
+        print("post")
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = auth.authenticate(username=username, password=password)
+        if user:
+            auth.login(request, user)
+            request.session['user'] = username  # 将session信息记录到浏览器
+
+            result = {
+                "gold_pie_legend_data": gold_pie_legend_data,
+                "gold_pie_series_data": gold_pie_series_data,
+                "pred_pie_legend_data": pred_pie_legend_data,
+                "pred_pie_series_data": pred_pie_series_data,
+                "bar_dataset_source": bar_dataset_source
+            }
+            print("login: ", result)
+            return render(request, "services/index.html", {"result": json.dumps(result)})
+        else:
+            return HttpResponseRedirect(reverse('authorize:index'))
     else:
-        return HttpResponseRedirect(reverse('authorize:index'))
+        print("get")
+        result = {
+            "gold_pie_legend_data": gold_pie_legend_data,
+            "gold_pie_series_data": gold_pie_series_data,
+            "pred_pie_legend_data": pred_pie_legend_data,
+            "pred_pie_series_data": pred_pie_series_data,
+            "bar_dataset_source": bar_dataset_source
+        }
+        print("check: ", result)
+        return render(request, "services/index.html", {"result": json.dumps(result)})
+
+
+@csrf_exempt
+def detail(request):
+    global merge_info
+    global gold_label
+    global pred_label
+    return JsonResponse({"gold": gold_label,
+                         "pred": pred_label})
 
 
 @csrf_exempt
@@ -34,6 +75,11 @@ def upload(request):
     global pred_label
     global gold_info
     global pred_info
+    global gold_pie_legend_data
+    global gold_pie_series_data
+    global pred_pie_legend_data
+    global pred_pie_series_data
+    global bar_dataset_source
     gold_file = request.FILES.get('gold_file')
     pred_file = request.FILES.get('pred_file')
     if gold_file:
@@ -53,6 +99,16 @@ def upload(request):
                 else:
                     gold_label[label] += 1
 
+        gold_pie_legend_data = []
+        gold_pie_series_data = []
+        for key in gold_label:
+            gold_pie_legend_data.append(key)
+            gold_pie_series_data.append({"name": key, "value": gold_label[key]})
+            if key in pred_label:
+                bar_dataset_source.append([key, gold_label[key], pred_label[key]])
+            else:
+                bar_dataset_source.append([key, gold_label[key], 0])
+
     if pred_file:
         pred_info = []
         pred_label = {}
@@ -69,6 +125,16 @@ def upload(request):
                     pred_label[label] = 1
                 else:
                     pred_label[label] += 1
+
+        pred_pie_legend_data = []
+        pred_pie_series_data = []
+        for key in pred_label:
+            pred_pie_legend_data.append(key)
+            pred_pie_series_data.append({"name": key, "value": pred_label[key]})
+            if key in gold_label:
+                bar_dataset_source.append([key, gold_label[key], pred_label[key]])
+            else:
+                bar_dataset_source.append([key, 0, pred_label[key]])
 
     if gold_file or pred_file:
         merge_info = []
@@ -102,5 +168,12 @@ def upload(request):
                     }
                 )
 
-    return JsonResponse({"gold": gold_label,
-                         "pred": pred_label})
+    result = {
+        "gold_pie_legend_data": gold_pie_legend_data,
+        "gold_pie_series_data": gold_pie_series_data,
+        "pred_pie_legend_data": pred_pie_legend_data,
+        "pred_pie_series_data": pred_pie_series_data,
+        "bar_dataset_source": bar_dataset_source
+    }
+    print("upload: ", result)
+    return JsonResponse(result)
