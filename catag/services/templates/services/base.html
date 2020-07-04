@@ -59,13 +59,13 @@
 <!--        </h6>-->
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link active" href="{% url 'services:index' %}">
+            <a class="nav-link" href="{% url 'services:index' %}">
               <span data-feather="home"></span>
               概览 <span class="sr-only">(current)</span>
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="{% url 'services:detail' %}">
               <span data-feather="file"></span>
               详情
             </a>

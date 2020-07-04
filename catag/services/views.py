@@ -3,6 +3,7 @@ import json
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.http import JsonResponse
+from django.http import HttpResponse
 from django.contrib import auth
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
@@ -19,6 +20,31 @@ pred_pie_series_data = []
 bar_dataset_source = []
 
 
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage, InvalidPage
+
+def detail(request):
+    global merge_info
+    paginator = Paginator(merge_info, 1)
+
+    if request.method == "GET":
+        # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
+        page = request.GET.get('page')
+        try:
+            merges = paginator.page(page)
+        # todo: 注意捕获异常
+        except PageNotAnInteger:
+            # 如果请求的页数不是整数, 返回第一页。
+            merges = paginator.page(1)
+        except EmptyPage:
+            # 如果请求的页数不在合法的页数范围内，返回结果的最后一页。
+            merges = paginator.page(paginator.num_pages)
+        except InvalidPage:
+            # 如果请求的页数不存在, 重定向页面
+            return HttpResponse('找不到页面的内容')
+
+    return render(request, "services/detail.html", {'merges': merges})
+
+
 @csrf_exempt
 def index(request):
     global gold_pie_legend_data
@@ -27,7 +53,6 @@ def index(request):
     global pred_pie_series_data
     global bar_dataset_source
     if request.method == "POST":
-        print("post")
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = auth.authenticate(username=username, password=password)
@@ -42,12 +67,10 @@ def index(request):
                 "pred_pie_series_data": pred_pie_series_data,
                 "bar_dataset_source": bar_dataset_source
             }
-            print("login: ", result)
             return render(request, "services/index.html", {"result": json.dumps(result)})
         else:
             return HttpResponseRedirect(reverse('authorize:index'))
     else:
-        print("get")
         result = {
             "gold_pie_legend_data": gold_pie_legend_data,
             "gold_pie_series_data": gold_pie_series_data,
@@ -55,17 +78,13 @@ def index(request):
             "pred_pie_series_data": pred_pie_series_data,
             "bar_dataset_source": bar_dataset_source
         }
-        print("check: ", result)
         return render(request, "services/index.html", {"result": json.dumps(result)})
 
 
-@csrf_exempt
-def detail(request):
-    global merge_info
-    global gold_label
-    global pred_label
-    return JsonResponse({"gold": gold_label,
-                         "pred": pred_label})
+# @csrf_exempt
+# def detail(request):
+#     global merge_info
+#     return render(request, "services/detail.html", {"result": json.dumps(merge_info)})
 
 
 @csrf_exempt
@@ -175,5 +194,4 @@ def upload(request):
         "pred_pie_series_data": pred_pie_series_data,
         "bar_dataset_source": bar_dataset_source
     }
-    print("upload: ", result)
     return JsonResponse(result)

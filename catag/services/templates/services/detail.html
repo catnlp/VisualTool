@@ -1,0 +1,247 @@
+{% extends "services/base.html" %}
+
+{% block content %}
+
+    <div align="center" class="justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+      <h1 class="h2">详 细</h1>
+    </div>
+    <div class="container">
+
+      <div class="text-center" >
+          {% for merge in merges %}
+              <span>{{ merge.text }} <br /></span>
+          {% endfor %}
+      </div>
+      <br/>
+
+      <div class="row">
+        <div class="col"></div>
+      <div id="pages" class="text-center">
+          <nav aria-label="...">
+              <ul class="pagination">
+                  <li class="page-item">
+                    {% if merges.has_previous %}
+                    <a class="page-link" href="?page={{ merges.previous_page_number }}">上一页</a>
+                     {% endif %}
+                  </li>
+                <li class="page-item">
+                  <a class="page-link">Page {{ merges.number }} of {{ merges.paginator.num_pages }}</a>
+                </li>
+                  <li class="page-item">
+                    {% if merges.has_next %}
+                    <a class="page-link" href="?page={{ merges.next_page_number }}">下一页</a>
+                    {% endif %}
+                  </li>
+              </ul>
+          </nav>
+      </div>
+        <div class="col"></div>
+      </div>
+
+
+      <!-- 显示文件名 -->
+      <script>
+        var myBar = echarts.init(document.getElementById('bar'));
+        var myGoldPie = echarts.init(document.getElementById('gold_pie'));
+        var myPredPie = echarts.init(document.getElementById('pred_pie'));
+
+        // 2.指定图表的配置项和数据 放在option对象里面
+        var barOption = {
+               title: {
+                text: '类别条形图'
+              },
+              legend: {},
+              tooltip: {},
+              dataset: {
+                  source: [
+                      ['类别', '标注', '预测']
+                  ]
+              },
+              xAxis: {type: 'category'},
+              yAxis: {},
+              // Declare several bar series, each will be mapped
+              // to a column of dataset.source by default.
+              series: [
+                  {type: 'bar'},
+                  {type: 'bar'}
+              ]
+          };
+
+        // 指定图表的配置项和数据 放在option对象里面
+          var goldPieOption = {
+            title: {
+              text: '标注文件饼状图',
+              subtext: '类别-数目',
+              x: 'center'
+            },
+            tooltip: {
+              trigger: 'item',
+              formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+              x: 'center',
+              y: 'bottom',
+              data: []
+            },
+            toolbox: {
+              show: true,
+              feature: {
+                mark: { show: true },
+                dataView: { show: true, readOnly: false },
+                magicType: {
+                  show: true,
+                  type: ['pie', 'funnel']
+                },
+                restore: { show: true },
+                saveAsImage: { show: true }
+              }
+            },
+            calculable: true,
+            series: [
+              {
+                name: '数目',
+                type: 'pie',
+                radius: [20, 110],
+                center: ['50%', '50%'],
+                roseType: 'radius',
+                label: {
+                  normal: {
+                    show: false
+                  },
+                  emphasis: {
+                    show: true
+                  }
+                },
+                lableLine: {
+                  normal: {
+                    show: false
+                  },
+                  emphasis: {
+                    show: true
+                  }
+                },
+                data: []
+              }
+            ]
+          };
+
+        var predPieOption = {
+          title: {
+            text: '预测文件饼状图',
+            subtext: '类别-数目',
+            x: 'center'
+          },
+          tooltip: {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+          },
+          legend: {
+            x: 'center',
+            y: 'bottom',
+            data: []
+          },
+          toolbox: {
+            show: true,
+            feature: {
+              mark: { show: true },
+              dataView: { show: true, readOnly: false },
+              magicType: {
+                show: true,
+                type: ['pie', 'funnel']
+              },
+              restore: { show: true },
+              saveAsImage: { show: true }
+            }
+          },
+          calculable: true,
+          series: [
+            {
+              name: '数目',
+              type: 'pie',
+              radius: [10, 110],
+              center: ['50%', '50%'],
+              roseType: 'radius',
+              label: {
+                normal: {
+                  show: false
+                },
+                emphasis: {
+                  show: true
+                }
+              },
+              lableLine: {
+                normal: {
+                  show: false
+                },
+                emphasis: {
+                  show: true
+                }
+              },
+              data: []
+            }
+          ]
+        };
+        // var result = {{ result|safe }};
+        // console.log(result);
+        // goldPieOption["legend"]["data"] = result["gold_pie_legend_data"];
+        // goldPieOption["series"][0]["data"] = result["gold_pie_series_data"];
+        // predPieOption["legend"]["data"] = result["pred_pie_legend_data"];
+        // predPieOption["series"][0]["data"] = result["pred_pie_series_data"];
+        // barOption["dataset"]["source"] = result["bar_dataset_source"];
+        myGoldPie.setOption(goldPieOption);
+        myPredPie.setOption(predPieOption);
+        myBar.setOption(barOption);
+
+        function AjaxSubmitGoldFile() {
+            var data = document.getElementById("gold_file").files[0];//加上索引files[0]就是文件的内容,固定写法
+            var f = new FormData();
+            f.append('gold_file',data);
+            $.ajax({
+                url:"{% url 'services:upload' %}",
+                type:"POST",
+                data:f,
+                success:function (arg) {
+                  goldPieOption["legend"]["data"] = arg["gold_pie_legend_data"];
+                  goldPieOption["series"][0]["data"] = arg["gold_pie_series_data"];
+                  barOption["dataset"]["source"] = arg["bar_dataset_source"];
+                  myGoldPie.setOption(goldPieOption);
+                  myBar.setOption(barOption);
+                },
+                processData: false,//通过FormData处理数据 jQuery上传文件必须要加这个 tell jQuery not to process the data
+                contentType:false,//通过FormData处理数据 jQuery上传文件必须要加这个 tell jQuery not to set contentType
+                //以上表示jQuery data数据内容不需要做处理了,把FormData内容发过去给服务器就可以了
+            })
+        }
+
+        function AjaxSubmitPredFile() {
+            var data = document.getElementById("pred_file").files[0];//加上索引files[0]就是文件的内容,固定写法
+            var f = new FormData();
+            f.append('pred_file',data);
+            $.ajax({
+                url:"{% url 'services:upload' %}",
+                type:"POST",
+                data:f,
+                success:function (arg) {
+                  predPieOption["legend"]["data"] = arg["pred_pie_legend_data"];
+                  predPieOption["series"][0]["data"] = arg["pred_pie_series_data"];
+                  barOption["dataset"]["source"] = arg["bar_dataset_source"];
+                  myBar.setOption(barOption);
+                  myPredPie.setOption(predPieOption);
+                },
+                processData: false,//通过FormData处理数据 jQuery上传文件必须要加这个 tell jQuery not to process the data
+                contentType:false,//通过FormData处理数据 jQuery上传文件必须要加这个 tell jQuery not to set contentType
+                //以上表示jQuery data数据内容不需要做处理了,把FormData内容发过去给服务器就可以了
+            })
+        }
+
+        function showFilename1(file){
+            $("#filename1").html(file.name);
+        }
+        function showFilename2(file){
+            $("#filename2").html(file.name);
+        }
+
+      </script>
+    </div>
+
+{% endblock %}

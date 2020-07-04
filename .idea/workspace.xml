@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c4eb4b24-fb1d-42b8-a343-29ddcb5a905b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/catag/services/templates/services/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/catag/services/templates/services/base.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/catag/services/templates/services/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/catag/services/templates/services/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/catag/services/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/catag/services/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/catag/services/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/catag/services/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -37,7 +33,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="TERMINAL_CUSTOM_COMMANDS_GOT_IT" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/catag/services/static/services/css" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/catag/services/templates/services" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -47,10 +43,10 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\catnlp\project\pycharm\VisualTool\catag\services\templates\services" />
       <recent name="D:\catnlp\project\pycharm\VisualTool\catag\services\static\services\css" />
       <recent name="D:\catnlp\project\pycharm\VisualTool\catag\services\static\services\js" />
       <recent name="D:\catnlp\project\pycharm\VisualTool\catag\authorize\static\authorize\image" />
-      <recent name="D:\catnlp\project\pycharm\VisualTool\catag\services\templates\services" />
       <recent name="D:\catnlp\project\pycharm\VisualTool\catag\authorize\static\authorize\css" />
     </key>
   </component>
@@ -67,7 +63,7 @@
       <workItem from="1593352189395" duration="4915000" />
       <workItem from="1593702647407" duration="1986000" />
       <workItem from="1593780088425" duration="8878000" />
-      <workItem from="1593825422386" duration="38277000" />
+      <workItem from="1593825422386" duration="43197000" />
     </task>
     <servers />
   </component>
