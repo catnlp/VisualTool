@@ -94,7 +94,7 @@
         }
 
         $("#showText").html(result["text"]);
-        $("#num_page").html(page.toString() + "/" + total.toString() + "页");
+        $("#num_page").html((page + 1).toString() + "/" + total.toString() + "页");
 
         function previous() {
             page = page - 1;
@@ -126,7 +126,7 @@
                             process_bar.style.width = pos.toString() + "%";
                         }
                   }
-                  $("#num_page").html(page.toString() + "/" + total.toString() + "页");
+                  $("#num_page").html((page + 1).toString() + "/" + total.toString() + "页");
                 },
                 // processData: false,//通过FormData处理数据 jQuery上传文件必须要加这个 tell jQuery not to process the data
                 contentType:false,//通过FormData处理数据 jQuery上传文件必须要加这个 tell jQuery not to set contentType
