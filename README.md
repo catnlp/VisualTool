@@ -2,6 +2,12 @@
 
 ## catag
 
+比较标注文件（gold file）和预测文件
+
+![catag](images/catag/overview.PNG)
+
+![catag](images/catag/detail.PNG)
+
 ### 环境
 
 - python>=3.6
@@ -11,6 +17,7 @@
 
 ```
 cd catag
+python manage.py migrate
 python manage.py runserver
 ```
 
@@ -22,6 +29,3 @@ python manage.py runserver
 {"text": ...}
 ...
 ```
-
-待做
-分页：https://blog.csdn.net/j123__/article/details/82952196
