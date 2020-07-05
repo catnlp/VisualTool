@@ -3,7 +3,6 @@ import json
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.http import JsonResponse
-from django.http import HttpResponse
 from django.contrib import auth
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
@@ -20,29 +19,23 @@ pred_pie_series_data = []
 bar_dataset_source = []
 
 
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage, InvalidPage
-
+@csrf_exempt
 def detail(request):
-    global merge_info
-    paginator = Paginator(merge_info, 1)
+    merge = merge_info[0]
+    return render(request, "services/detail.html", {"merge": json.dumps(merge)})
 
-    if request.method == "GET":
-        # 获取 url 后面的 page 参数的值, 首页不显示 page 参数, 默认值是 1
+
+@csrf_exempt
+def change(request):
+    if request.method == 'GET':
         page = request.GET.get('page')
-        try:
-            merges = paginator.page(page)
-        # todo: 注意捕获异常
-        except PageNotAnInteger:
-            # 如果请求的页数不是整数, 返回第一页。
-            merges = paginator.page(1)
-        except EmptyPage:
-            # 如果请求的页数不在合法的页数范围内，返回结果的最后一页。
-            merges = paginator.page(paginator.num_pages)
-        except InvalidPage:
-            # 如果请求的页数不存在, 重定向页面
-            return HttpResponse('找不到页面的内容')
-
-    return render(request, "services/detail.html", {'merges': merges})
+        page = int(page)
+        if page < 0:
+            page = 0
+        if page >= len(merge_info):
+            page = len(merge_info) - 1
+        merge = merge_info[page]
+        return JsonResponse({"merge": merge, "total": len(merge_info)})
 
 
 @csrf_exempt
@@ -79,12 +72,6 @@ def index(request):
             "bar_dataset_source": bar_dataset_source
         }
         return render(request, "services/index.html", {"result": json.dumps(result)})
-
-
-# @csrf_exempt
-# def detail(request):
-#     global merge_info
-#     return render(request, "services/detail.html", {"result": json.dumps(merge_info)})
 
 
 @csrf_exempt
