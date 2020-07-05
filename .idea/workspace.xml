@@ -2,13 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c4eb4b24-fb1d-42b8-a343-29ddcb5a905b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/catag/services/templates/services/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/catag/services/templates/services/base.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/catag/services/templates/services/detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/catag/services/templates/services/detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/catag/services/templates/services/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/catag/services/templates/services/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/catag/services/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/catag/services/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/catag/services/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/catag/services/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -55,6 +51,35 @@
       <recent name="D:\catnlp\project\pycharm\VisualTool\catag\authorize\static\authorize\css" />
     </key>
   </component>
+  <component name="RunManager">
+    <configuration name="views" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="VisualTool" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/catag/services" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/catag/services/views.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.views" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -69,7 +94,7 @@
       <workItem from="1593702647407" duration="1986000" />
       <workItem from="1593780088425" duration="8878000" />
       <workItem from="1593825422386" duration="43246000" />
-      <workItem from="1593910385578" duration="9949000" />
+      <workItem from="1593910385578" duration="18131000" />
     </task>
     <servers />
   </component>
@@ -85,9 +110,28 @@
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
     <state x="1023" y="374" key="FileChooserDialogImpl/0.0.2194.1194@0.0.2194.1194" timestamp="1593705132966" />
+    <state width="1292" height="330" key="GridCell.Tab.0.bottom" timestamp="1593930967644">
+      <screen x="0" y="0" width="2194" height="1194" />
+    </state>
+    <state width="1292" height="330" key="GridCell.Tab.0.bottom/0.0.2194.1194@0.0.2194.1194" timestamp="1593930967644" />
+    <state width="1292" height="330" key="GridCell.Tab.0.center" timestamp="1593930967644">
+      <screen x="0" y="0" width="2194" height="1194" />
+    </state>
+    <state width="1292" height="330" key="GridCell.Tab.0.center/0.0.2194.1194@0.0.2194.1194" timestamp="1593930967644" />
+    <state width="1292" height="330" key="GridCell.Tab.0.left" timestamp="1593930967644">
+      <screen x="0" y="0" width="2194" height="1194" />
+    </state>
+    <state width="1292" height="330" key="GridCell.Tab.0.left/0.0.2194.1194@0.0.2194.1194" timestamp="1593930967644" />
+    <state width="1292" height="330" key="GridCell.Tab.0.right" timestamp="1593930967644">
+      <screen x="0" y="0" width="2194" height="1194" />
+    </state>
+    <state width="1292" height="330" key="GridCell.Tab.0.right/0.0.2194.1194@0.0.2194.1194" timestamp="1593930967644" />
     <state x="318" y="242" key="SettingsEditor" timestamp="1593864017610">
       <screen x="0" y="0" width="2194" height="1194" />
     </state>
     <state x="318" y="242" key="SettingsEditor/0.0.2194.1194@0.0.2194.1194" timestamp="1593864017610" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/VisualTool$views.coverage" NAME="views Coverage Results" MODIFIED="1593930563331" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/catag/services" />
   </component>
 </project>

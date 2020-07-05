@@ -1,4 +1,6 @@
 import json
+import numpy as np
+import colorsys
 
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
@@ -17,12 +19,176 @@ gold_pie_series_data = []
 pred_pie_legend_data = []
 pred_pie_series_data = []
 bar_dataset_source = []
+html_texts = []
+
+page = 0
+red = '<span style="background:red;">'
+blue = '<span style="background:blue;">'
+grey = '<span style="background:grey;">'
+green = '<span style="background:green;">'
+end_span = '</span>'
+
+
+def _get_colors(num_colors):
+    colors = []
+    for i in np.arange(0., 360., 360. / num_colors):
+        hue = i/360.
+        lightness = (50 + np.random.rand() * 10)/100.
+        saturation = (90 + np.random.rand() * 10)/100.
+        colors.append(colorsys.hls_to_rgb(hue, lightness, saturation))
+    return colors
+
+
+def _get_html_text(text, gold_list, pred_list):
+    color_texts = []
+    gold_idx = 0
+    pred_idx = 0
+    while gold_idx < len(gold_list) and \
+            pred_idx < len(pred_list):
+        gold_start, gold_end, gold_type = gold_list[gold_idx]
+        pred_start, pred_end, pred_type = pred_list[pred_idx]
+        if gold_start == pred_start and \
+                gold_end == pred_end:
+            if gold_type == pred_type:
+                tmp = green + text[gold_start: gold_end] + end_span
+                color_texts.append([gold_start, gold_end, tmp])
+            else:
+                # html_text += grey + text[gold_start, gold_end] + end_span
+                tmp = grey + text[gold_start: gold_end] + end_span
+                color_texts.append([gold_start, gold_end, tmp])
+            gold_idx += 1
+            pred_idx += 1
+        elif gold_start < pred_start and gold_end < pred_end and gold_end > pred_start:
+            # html_text += red + text[gold_start, pred_start] + end_span
+            tmp = red + text[gold_start: pred_start] + end_span
+            color_texts.append([gold_start, pred_start, tmp])
+            if gold_type == pred_type:
+                # html_text += green + text[pred_start, gold_end] + end_span
+                tmp = green + text[pred_start: gold_end] + end_span
+                color_texts.append([pred_start, gold_end, tmp])
+            else:
+                # html_text += grey + text[pred_start, gold_end] + end_span
+                tmp = grey + text[pred_start: gold_end] + end_span
+                color_texts.append([pred_start, gold_end, tmp])
+            pred_list[pred_idx][0] = gold_end
+            gold_idx += 1
+        elif gold_start > pred_start and gold_end > pred_end and gold_start < pred_end:
+            # html_text += blue + text[pred_start, gold_start] + end_span
+            tmp = blue + text[pred_start: gold_start] + end_span
+            color_texts.append([pred_start, gold_start, tmp])
+            if gold_type == pred_type:
+                # html_text += green + text[gold_start, pred_end] + end_span
+                tmp = green + text[gold_start: pred_end] + end_span
+                color_texts.append([gold_start, pred_end, tmp])
+            else:
+                # html_text += grey + text[gold_start, pred_end] + end_span
+                tmp = grey + text[gold_start: pred_end] + end_span
+                color_texts.append([gold_start, pred_end, tmp])
+            gold_list[gold_idx][0] = pred_end
+            pred_idx += 1
+        elif gold_start >= pred_start and gold_end <= pred_end:
+            if gold_start == pred_start:
+                if gold_type == pred_type:
+                    # html_text += green + text[gold_start, gold_end] + end_span
+                    tmp = green + text[gold_start: gold_end] + end_span
+                    color_texts.append([gold_start, gold_end, tmp])
+                else:
+                    # html_text += grey + text[gold_start, gold_end] + end_span
+                    tmp = grey + text[gold_start: gold_end] + end_span
+                    color_texts.append([gold_start, gold_end, tmp])
+                pred_list[pred_idx][0] = gold_end
+                gold_idx += 1
+            else:
+                # html_text += blue + text[pred_start, gold_start] + end_span
+                tmp = blue + text[pred_start: gold_start] + end_span
+                color_texts.append([pred_start, gold_start, tmp])
+                if gold_type == pred_type:
+                    # html_text += green + text[gold_start, gold_end] + end_span
+                    tmp = green + text[gold_start: gold_end] + end_span
+                    color_texts.append([gold_start, gold_end, tmp])
+                else:
+                    # html_text += grey + text[gold_start, gold_end] + end_span
+                    tmp = grey + text[gold_start: gold_end] + end_span
+                    color_texts.append([gold_start, gold_end, tmp])
+                if gold_end == pred_end:
+                    pred_idx += 1
+                else:
+                    pred_list[pred_idx][0] = gold_end
+                gold_idx += 1
+        elif gold_start <= pred_start and gold_end >= pred_end:
+            if gold_start == pred_start:
+                if gold_type == pred_type:
+                    # html_text += green + text[pred_start, pred_end] + end_span
+                    tmp = green + text[pred_start: pred_end] + end_span
+                    color_texts.append([pred_start, pred_end, tmp])
+                else:
+                    # html_text += grey + text[pred_start, pred_end] + end_span
+                    tmp = grey + text[pred_start: pred_end] + end_span
+                    color_texts.append([pred_start, pred_end, tmp])
+                gold_list[gold_idx][0] = pred_end
+                pred_idx += 1
+            else:
+                # html_text += red + text[gold_start, pred_start] + end_span
+                tmp = red + text[gold_start: pred_start] + end_span
+                color_texts.append([gold_start, pred_start, tmp])
+                if gold_type == pred_type:
+                    # html_text += green + text[pred_start, pred_end] + end_span
+                    tmp = green + text[pred_start: pred_end] + end_span
+                    color_texts.append([pred_start, pred_end, tmp])
+                else:
+                    # html_text += grey + text[pred_start, pred_end] + end_span
+                    tmp = grey + text[pred_start: pred_end] + end_span
+                    color_texts.append([pred_start, pred_end, tmp])
+                if gold_end == pred_end:
+                    gold_idx += 1
+                else:
+                    gold_list[gold_idx][0] = pred_end
+                pred_idx += 1
+        elif gold_end <= pred_start:
+            # html_text += red + text[gold_start, gold_end] + end_span
+            tmp = red + text[gold_start: gold_end] + end_span
+            color_texts.append([gold_start, gold_end, tmp])
+            gold_idx += 1
+        elif gold_start >= pred_end:
+            # html_text += blue + text[pred_start, pred_end] + end_span
+            tmp = blue + text[pred_start: pred_end] + end_span
+            color_texts.append([pred_start, pred_end, tmp])
+            pred_idx += 1
+        else:
+            raise RuntimeError("Other situation!")
+
+    while gold_idx < len(gold_list):
+        gold_start, gold_end, gold_type = gold_list[gold_idx]
+        # html_text += red + text[gold_start, gold_end] + end_span
+        tmp = red + text[gold_start: gold_end] + end_span
+        color_texts.append([gold_start, gold_end, tmp])
+        gold_idx += 1
+
+    while pred_idx < len(pred_list):
+        pred_start, pred_end, pred_type = pred_list[pred_idx]
+        # html_text += red + text[pred_start, pred_end] + end_span
+        tmp = blue + text[pred_start: pred_end] + end_span
+        color_texts.append([pred_start, pred_end, tmp])
+        pred_idx += 1
+
+    idx = 0
+    html_text = ""
+    for color_text in color_texts:
+        start, end, ctext = color_text
+        if idx < start:
+            html_text += text[idx: start]
+        html_text += ctext
+        idx = end
+    if idx < len(text):
+        html_text += text[idx: len(text)]
+
+    return html_text
 
 
 @csrf_exempt
 def detail(request):
-    merge = merge_info[0]
-    return render(request, "services/detail.html", {"merge": json.dumps(merge)})
+    html_text = html_texts[page]
+    return render(request, "services/detail.html", {"result": json.dumps({"text": html_text, "page": page})})
 
 
 @csrf_exempt
@@ -34,8 +200,8 @@ def change(request):
             page = 0
         if page >= len(merge_info):
             page = len(merge_info) - 1
-        merge = merge_info[page]
-        return JsonResponse({"merge": merge, "total": len(merge_info)})
+        html_text = html_texts[page]
+        return JsonResponse({"text": html_text, "total": len(merge_info)})
 
 
 @csrf_exempt
@@ -86,6 +252,7 @@ def upload(request):
     global pred_pie_legend_data
     global pred_pie_series_data
     global bar_dataset_source
+    global html_texts
     gold_file = request.FILES.get('gold_file')
     pred_file = request.FILES.get('pred_file')
     if gold_file:
@@ -144,6 +311,7 @@ def upload(request):
 
     if gold_file or pred_file:
         merge_info = []
+        html_texts = []
         if gold_info and pred_info:
             for gold, pred in zip(gold_info, pred_info):
                 assert gold["text"] == pred["text"]
@@ -153,6 +321,10 @@ def upload(request):
                         "gold": gold["label"],
                         "pred": pred["label"]
                     })
+                html_text = _get_html_text(gold["text"],
+                                           gold["label"],
+                                           pred["label"])
+                html_texts.append(html_text)
         elif gold_info:
             for gold in gold_info:
                 merge_info.append(
@@ -162,6 +334,10 @@ def upload(request):
                         "pred": []
                     }
                 )
+                html_text = _get_html_text(gold["text"],
+                                           gold["label"],
+                                           [])
+                html_texts.append(html_text)
         elif pred_info:
             for pred in pred_info:
                 merge_info.append(
@@ -173,6 +349,10 @@ def upload(request):
                         }
                     }
                 )
+                html_text = _get_html_text(pred["text"],
+                                           [],
+                                           pred["label"])
+                html_texts.append(html_text)
 
     result = {
         "gold_pie_legend_data": gold_pie_legend_data,
@@ -182,3 +362,12 @@ def upload(request):
         "bar_dataset_source": bar_dataset_source
     }
     return JsonResponse(result)
+
+
+if __name__ == "__main__":
+    res = _get_colors(4)
+    print(res)
+    text = "彭小军认为，国内银行现在走的是台湾的发卡模式，先通过跑马圈地再在圈的地里面选择客户，"
+    gold = [[0, 3, "name"], [15, 17, "address"]]
+    pred = [[0, 3, "name"], [14, 16, "address"]]
+    print(_get_html_text(text, gold, pred))

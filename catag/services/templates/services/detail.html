@@ -72,7 +72,8 @@
         var page = 0;
         var total = 0;
         var process_bar = document.getElementById("processBar");
-        var result = {{ merge|safe }};
+        var result = {{ result|safe }};
+        page = result["page"]
         console.log(result);
         if (total === 0){
             process_bar.style.width = "0%";
@@ -100,7 +101,7 @@
                 type:"GET",
                 data:{"page": page},
                 success:function (arg) {
-                  $("#showText").html(arg["merge"]["text"]);
+                  $("#showText").html(arg["text"]);
                   total = arg["total"];
                   if (total > 0){
                       var pos = 100 * page / total;
