@@ -22,10 +22,10 @@ bar_dataset_source = []
 html_texts = []
 
 page = 0
-red = '<span style="background:red;">'
-blue = '<span style="background:blue;">'
-grey = '<span style="background:grey;">'
-green = '<span style="background:green;">'
+red = '<span style="background:#FF3333;color:white;border-radius:6px;">'
+blue = '<span style="background:#209CEE;color:white;border-radius:6px;">'
+grey = '<span style="background:#FFCC00;color:white;border-radius:6px;">'
+green = '<span style="background:#33CC99;color:white;border-radius:6px;">'
 end_span = '</span>'
 
 
@@ -355,6 +355,8 @@ def upload(request):
                                            pred["label"])
                 html_texts.append(html_text)
 
+    gold_pie_legend_data = sorted(gold_pie_legend_data)
+    pred_pie_legend_data = sorted(pred_pie_legend_data)
     result = {
         "gold_pie_legend_data": gold_pie_legend_data,
         "gold_pie_series_data": gold_pie_series_data,

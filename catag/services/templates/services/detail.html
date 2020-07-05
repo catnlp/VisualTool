@@ -44,25 +44,34 @@
         </div>
         <br/>
         <br/>
+        <br/>
         <div class="row">
+            <div class="col-2">
+                <span style="background:#33CC99;color:white;font-size: large;">位置和类型一致</span>
+                <br/>
+                <span style="background:#FFCC00;color:white;font-size: large;">类型不一致</span>
+                <br/>
+                <span style="background:#FF3333;color:white;font-size: large;">只有标注实体</span>
+                <br/>
+                <span style="background:#209CEE;color:white;font-size: large;">只有预测实体</span>
+            </div>
+            <div class="col-10">
+                <div class="shadow p-3 mb-5 bg-white rounded" style="height: 400px">
+              <span id="showText" class="text-monospace" style="font-size: x-large;"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2"></div>
             <div align="center" class="col-3">
                 <button type="button" class="btn btn-primary" onclick="previous()">上一页</button>
             </div>
-            <div class="col-6"></div>
+            <div align="center" class="col-4">
+                <button id="num_page" type="button" class="btn" style="font-size: large"></button>
+            </div>
             <div align="center" class="col-3">
                 <button type="button" class="btn btn-primary" onclick="next()">下一页</button>
             </div>
-        </div>
-        <br/>
-        <br/>
-        <div class="row">
-            <div class="col"></div>
-            <div class="col-10">
-                <div class="shadow p-3 mb-5 bg-white rounded">
-              <span id="showText" class="text-monospace" style="font-size: large;height: 600px"></span>
-                </div>
-            </div>
-            <div class="col"></div>
         </div>
       <br/>
 
@@ -85,6 +94,7 @@
         }
 
         $("#showText").html(result["text"]);
+        $("#num_page").html(page.toString() + "/" + total.toString() + "页");
 
         function previous() {
             page = page - 1;
@@ -116,6 +126,7 @@
                             process_bar.style.width = pos.toString() + "%";
                         }
                   }
+                  $("#num_page").html(page.toString() + "/" + total.toString() + "页");
                 },
                 // processData: false,//通过FormData处理数据 jQuery上传文件必须要加这个 tell jQuery not to process the data
                 contentType:false,//通过FormData处理数据 jQuery上传文件必须要加这个 tell jQuery not to set contentType
