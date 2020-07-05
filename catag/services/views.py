@@ -187,21 +187,22 @@ def _get_html_text(text, gold_list, pred_list):
 
 @csrf_exempt
 def detail(request):
+    global page
     html_text = html_texts[page]
-    return render(request, "services/detail.html", {"result": json.dumps({"text": html_text, "page": page})})
+    return render(request, "services/detail.html", {"result": json.dumps({"text": html_text, "page": page, "total": len(html_texts)})})
 
 
 @csrf_exempt
 def change(request):
+    global page
     if request.method == 'GET':
-        page = request.GET.get('page')
-        page = int(page)
+        page = int(request.GET.get('page'))
         if page < 0:
             page = 0
         if page >= len(merge_info):
             page = len(merge_info) - 1
         html_text = html_texts[page]
-        return JsonResponse({"text": html_text, "total": len(merge_info)})
+        return JsonResponse({"text": html_text, "total": len(html_texts)})
 
 
 @csrf_exempt

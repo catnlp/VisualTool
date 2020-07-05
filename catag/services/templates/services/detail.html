@@ -59,7 +59,7 @@
             <div class="col"></div>
             <div class="col-10">
                 <div class="shadow p-3 mb-5 bg-white rounded">
-              <span id="showText" class="text-monospace" style="font-size: large"></span>
+              <span id="showText" class="text-monospace" style="font-size: large;height: 600px"></span>
                 </div>
             </div>
             <div class="col"></div>
@@ -73,7 +73,8 @@
         var total = 0;
         var process_bar = document.getElementById("processBar");
         var result = {{ result|safe }};
-        page = result["page"]
+        page = result["page"];
+        total = result["total"];
         console.log(result);
         if (total === 0){
             process_bar.style.width = "0%";
